@@ -7,7 +7,7 @@ UP, DOWN, LEFT, RIGHT = 90, 270, 180, 0
 class Snake:
     def __init__(self) -> None:
         self.segments:list[t.Turtle] = []
-        self.speed = 0.2
+        self.speed = 0.1
         self.SNAKE_COLOR = "white"
         self.SNAKE_SHAPE = "square"
         self.SNAKE_TAILS_DISTANCE = 20
@@ -37,16 +37,24 @@ class Snake:
     def left(self):
         if self.head.heading() != RIGHT:
             self.__direct_snake__(LEFT)
+    
+    def add_tail(self):
+        xPos, yPos = 0, 0
+        if self.segments:
+            xPos = self.segments[-1].xcor() - self.SNAKE_TAILS_DISTANCE
+            yPos = self.segments[-1].ycor()
+
+        tur = t.Turtle(self.SNAKE_SHAPE)
+        tur.penup()
+        tur.color(self.SNAKE_COLOR)
+        tur.goto(x=xPos, y = yPos)
+        self.segments.append(tur)
 
     def __direct_snake__(self, heading:int):
         self.head.setheading(heading)
     
     def __create_snake__(self):
-        xPos = 0
         for _ in range(3):
-            tur = t.Turtle(self.SNAKE_SHAPE)
-            tur.penup()
-            tur.color(self.SNAKE_COLOR)
-            tur.goto(x=xPos, y = 0)
-            self.segments.append(tur)
-            xPos =-self.SNAKE_TAILS_DISTANCE 
+            self.add_tail()
+    
+    
